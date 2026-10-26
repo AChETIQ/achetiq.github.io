@@ -1,20 +1,18 @@
-PARCHE 2026-10-26 — Apuntes Académicos sin cuenta regresiva
-============================================================
+PARCHE 2026-10-26 — Seguimiento de Carrera: horas de obligatorias aprobadas
+=========================================================================
 
-Problema
-  Al ingresar a pages/recursos/apuntes.html se veía por un instante el
-  contador de apertura y luego desaparecía. El HTML pintaba el contador
-  por defecto y recién countdown-recursos.js lo ocultaba al cargar
-  (la fecha de apertura, 2026-08-01, ya pasó).
+Cambio
+  Nueva tarjeta en el tablero de indicadores de pages/recursos/seguimiento.html:
+  «Hs. obligatorias aprob.» (sin electivas). Suma la carga horaria de las
+  materias obligatorias en estado «Aprobada»; las electivas siguen
+  contándose aparte en «Hs. electivas aprob.».
+  Se ubica junto a las horas electivas. Con 10 tarjetas en 3 columnas, la
+  última pasa a ocupar la fila completa para no quedar sola.
 
-Solución
-  - Se retiró el bloque <section class="countdown"> de la página: los
-    filtros, la grilla de materias y el CTA se sirven directamente.
-  - Se quitaron el <script> y el <link rel="modulepreload"> de
-    assets/js/countdown-recursos.js: el script ya no se descarga.
+  La planilla Excel descargable NO se modifica.
 
 Archivos a reemplazar en el repositorio oficial (misma ruta)
-  pages/recursos/apuntes.html
-
-No se borra nada: assets/js/countdown-recursos.js y
-partials/countdown-recursos.html quedan en el repo para reutilizarlos.
+  assets/js/seguimiento.js
+  assets/css/seguimiento.css
+  assets/css/main.bundle.css   (hoja compilada que carga el sitio;
+                                regenerada con `node scripts/build-css.mjs`)
