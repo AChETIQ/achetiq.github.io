@@ -1,25 +1,53 @@
-PARCHE 2026-10-26 — Seguimiento de Carrera: descarga del Plan de estudios 2023
-============================================================================
+PARCHE 2026-10-26 — Línea de tiempo y sombreado de los diagramas de McCabe-Thiele
+=================================================================================
 
-Cambio
-  En la cabecera de pages/recursos/seguimiento.html se agrega la tarjeta
-  «Plan de estudios 2023» (Diseño Curricular de Ingeniería Química, UTN,
-  PDF), a la izquierda de «Descargar Excel» y «Abrir en Google Sheets».
-    - Desde 1280 px: columna propia, a la altura de las dos tarjetas.
-    - Entre 1024 y 1279 px: las tres tarjetas apiladas a la derecha.
-    - Tablet y móvil: tres tarjetas en fila o apiladas, primero el plan.
-  El archivo se descarga como «Plan_2023_Ingenieria_Quimica_UTN.pdf».
+A. SOBRE ACHETIQ — fin del tronco de la línea de tiempo
+
+Defectos
+  1. El tronco azul de «Nuestra historia» seguía por debajo del punto final
+     de «Próximamente» (26 px en escritorio, 79 px en móvil). Pasaba cuando
+     la línea de tiempo se dibujaba con su panel oculto (por ejemplo, al
+     entrar por «Galería» y pasar a «Asociación»): el recorte del tronco se
+     medía una sola vez, con el panel sin dimensiones, y no se repetía.
+  2. En pantallas de 880 px o menos, ramas y empalmes quedaban 4 px a la
+     derecha del tronco (padding lateral del <ol>).
+
+Solución
+  1. assets/js/loaders.js: el recorte se vuelve a medir con ResizeObserver
+     cada vez que cambia la caja de la línea de tiempo (al mostrarse el
+     panel, al cargar las fuentes, al cambiar el ancho) y el relleno azul se
+     re-sincroniza.
+  2. assets/css/sobre-asociacion.css: se quita el padding lateral del <ol>
+     en móvil.
+
+
+B. SIMULADORES OU II — sombreado de las etapas fuera de las rectas
+
+Defecto
+  Cada banda sombreada de etapa es un polígono que cerraba con un segmento
+  recto entre el pie de la vertical y el inicio de la horizontal. Eso solo
+  coincide con la recta de operación si ambos puntos están sobre la misma
+  recta. En destilación fallaba:
+    - en la etapa de alimentación, que empieza sobre la recta de
+      rectificación y termina sobre la de agotamiento: el cierre cortaba por
+      fuera de la intersección (punto f) y sombreaba una cuña bajo las rectas;
+    - en el reboiler, cuya vertical llega a la diagonal por debajo de x_B.
+
+Solución
+  - assets/js/sim/grafico.js: cada etapa admite `cierre`, la lista de
+    vértices por los que la banda vuelve siguiendo las rectas reales.
+  - assets/js/sim/destilacion.js: agrega la intersección (x_i, y_i) en la
+    etapa que la cruza y (x_B, x_B) en el reboiler.
+  - assets/js/sim/absorcion.js: el cierre de la última etapa parcial, que ya
+    era correcto, pasa al mismo mecanismo (antes `xc`).
+  Verificado en 11 combinaciones de parámetros (R, f de −0,2 a 1,3, E_MV,
+  α, x_B, x_F): ninguna banda queda fuera de las rectas.
+
 
 Archivos a reemplazar en el repositorio oficial (misma ruta)
-  pages/recursos/seguimiento.html
-  assets/css/headers.css
-  assets/css/main.bundle.css      (compilado con TODAS las secciones:
-                                   Simulaciones, Seguimiento y este cambio)
-  docs/Disenio_Curricular_IQ.pdf  (solo si no existe ya; es el mismo PDF)
-  pages/recursos/apuntes.html     (corrección: ver abajo)
-
-URL del sitio oficial
-  Los HTML de este ZIP se generaron con BASE_URL = https://achetiq.github.io
-  (canonical, og:url, og:image y JSON-LD). apuntes.html se incluye porque el
-  primer parche (2026-10-26_apuntes-sin-contador.zip) llevaba por error las
-  URL del sitio de laboratorio; el contenido de la página no cambia.
+  assets/js/loaders.js
+  assets/css/sobre-asociacion.css
+  assets/js/sim/grafico.js
+  assets/js/sim/destilacion.js
+  assets/js/sim/absorcion.js
+  (main.bundle.css no cambia.)
