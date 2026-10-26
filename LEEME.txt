@@ -1,18 +1,31 @@
-PARCHE 2026-10-26 — Seguimiento de Carrera: horas de obligatorias aprobadas
-=========================================================================
+PARCHE 2026-10-26 — Simulaciones: tarjeta sobredimensionada y gráficos sin color
+================================================================================
 
-Cambio
-  Nueva tarjeta en el tablero de indicadores de pages/recursos/seguimiento.html:
-  «Hs. obligatorias aprob.» (sin electivas). Suma la carga horaria de las
-  materias obligatorias en estado «Aprobada»; las electivas siguen
-  contándose aparte en «Hs. electivas aprob.».
-  Se ubica junto a las horas electivas. Con 10 tarjetas en 3 columnas, la
-  última pasa a ocupar la fila completa para no quedar sola.
+Síntomas
+  - Simulaciones: la tarjeta de Operaciones Unitarias II ocupaba todo el ancho
+    (≈ 1170 × 780 px en escritorio, en lugar de una columna de ≈ 375 px).
+  - Simuladores de McCabe-Thiele: diagramas sin colores; la curva de equilibrio,
+    las rectas de operación, rectificación y agotamiento y el serpentín del
+    condensador no se dibujaban (trazo «none»).
 
-  La planilla Excel descargable NO se modifica.
+Causa
+  El parche anterior «2026-10-26_seguimiento-horas-obligatorias.zip» incluía
+  assets/css/main.bundle.css compilado SIN las fuentes de Simulaciones. Al
+  subirlo se reemplazó la hoja compilada y desaparecieron:
+    - los colores de las series (--dataviz-azul / -violeta / -verde, tokens.css);
+    - la grilla .simulaciones__grid y el tema papel (recursos.css);
+    - el estado hover de la tarjeta .card-materia--enlace (cards.css).
+  Una variable CSS inexistente invalida el trazo: por eso las líneas no se veían.
+
+Solución
+  main.bundle.css recompilado (node scripts/build-css.mjs) con TODAS las fuentes:
+  Simulaciones + la tarjeta de horas obligatorias de Seguimiento.
 
 Archivos a reemplazar en el repositorio oficial (misma ruta)
-  assets/js/seguimiento.js
-  assets/css/seguimiento.css
-  assets/css/main.bundle.css   (hoja compilada que carga el sitio;
-                                regenerada con `node scripts/build-css.mjs`)
+  assets/css/main.bundle.css   ← el que corrige el problema (obligatorio)
+  tokens.css                   ┐ fuentes con las que se compiló el bundle;
+  assets/css/cards.css         │ si el repositorio oficial ya tiene la versión
+  assets/css/recursos.css      │ de Simulaciones y el parche de Seguimiento,
+  assets/css/seguimiento.css   ┘ son idénticas y reemplazarlas no cambia nada.
+
+Este bundle conserva la tarjeta «Hs. obligatorias aprob.» de Seguimiento.
