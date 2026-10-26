@@ -1,31 +1,25 @@
-PARCHE 2026-10-26 — Simulaciones: tarjeta sobredimensionada y gráficos sin color
-================================================================================
+PARCHE 2026-10-26 — Seguimiento de Carrera: descarga del Plan de estudios 2023
+============================================================================
 
-Síntomas
-  - Simulaciones: la tarjeta de Operaciones Unitarias II ocupaba todo el ancho
-    (≈ 1170 × 780 px en escritorio, en lugar de una columna de ≈ 375 px).
-  - Simuladores de McCabe-Thiele: diagramas sin colores; la curva de equilibrio,
-    las rectas de operación, rectificación y agotamiento y el serpentín del
-    condensador no se dibujaban (trazo «none»).
-
-Causa
-  El parche anterior «2026-10-26_seguimiento-horas-obligatorias.zip» incluía
-  assets/css/main.bundle.css compilado SIN las fuentes de Simulaciones. Al
-  subirlo se reemplazó la hoja compilada y desaparecieron:
-    - los colores de las series (--dataviz-azul / -violeta / -verde, tokens.css);
-    - la grilla .simulaciones__grid y el tema papel (recursos.css);
-    - el estado hover de la tarjeta .card-materia--enlace (cards.css).
-  Una variable CSS inexistente invalida el trazo: por eso las líneas no se veían.
-
-Solución
-  main.bundle.css recompilado (node scripts/build-css.mjs) con TODAS las fuentes:
-  Simulaciones + la tarjeta de horas obligatorias de Seguimiento.
+Cambio
+  En la cabecera de pages/recursos/seguimiento.html se agrega la tarjeta
+  «Plan de estudios 2023» (Diseño Curricular de Ingeniería Química, UTN,
+  PDF), a la izquierda de «Descargar Excel» y «Abrir en Google Sheets».
+    - Desde 1280 px: columna propia, a la altura de las dos tarjetas.
+    - Entre 1024 y 1279 px: las tres tarjetas apiladas a la derecha.
+    - Tablet y móvil: tres tarjetas en fila o apiladas, primero el plan.
+  El archivo se descarga como «Plan_2023_Ingenieria_Quimica_UTN.pdf».
 
 Archivos a reemplazar en el repositorio oficial (misma ruta)
-  assets/css/main.bundle.css   ← el que corrige el problema (obligatorio)
-  tokens.css                   ┐ fuentes con las que se compiló el bundle;
-  assets/css/cards.css         │ si el repositorio oficial ya tiene la versión
-  assets/css/recursos.css      │ de Simulaciones y el parche de Seguimiento,
-  assets/css/seguimiento.css   ┘ son idénticas y reemplazarlas no cambia nada.
+  pages/recursos/seguimiento.html
+  assets/css/headers.css
+  assets/css/main.bundle.css      (compilado con TODAS las secciones:
+                                   Simulaciones, Seguimiento y este cambio)
+  docs/Disenio_Curricular_IQ.pdf  (solo si no existe ya; es el mismo PDF)
+  pages/recursos/apuntes.html     (corrección: ver abajo)
 
-Este bundle conserva la tarjeta «Hs. obligatorias aprob.» de Seguimiento.
+URL del sitio oficial
+  Los HTML de este ZIP se generaron con BASE_URL = https://achetiq.github.io
+  (canonical, og:url, og:image y JSON-LD). apuntes.html se incluye porque el
+  primer parche (2026-10-26_apuntes-sin-contador.zip) llevaba por error las
+  URL del sitio de laboratorio; el contenido de la página no cambia.
