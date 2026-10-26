@@ -1,0 +1,20 @@
+PARCHE 2026-10-26 — Apuntes Académicos sin cuenta regresiva
+============================================================
+
+Problema
+  Al ingresar a pages/recursos/apuntes.html se veía por un instante el
+  contador de apertura y luego desaparecía. El HTML pintaba el contador
+  por defecto y recién countdown-recursos.js lo ocultaba al cargar
+  (la fecha de apertura, 2026-08-01, ya pasó).
+
+Solución
+  - Se retiró el bloque <section class="countdown"> de la página: los
+    filtros, la grilla de materias y el CTA se sirven directamente.
+  - Se quitaron el <script> y el <link rel="modulepreload"> de
+    assets/js/countdown-recursos.js: el script ya no se descarga.
+
+Archivos a reemplazar en el repositorio oficial (misma ruta)
+  pages/recursos/apuntes.html
+
+No se borra nada: assets/js/countdown-recursos.js y
+partials/countdown-recursos.html quedan en el repo para reutilizarlos.
