@@ -1,53 +1,96 @@
-PARCHE 2026-10-26 — Línea de tiempo y sombreado de los diagramas de McCabe-Thiele
-=================================================================================
+PARCHE 2026-10-29 — Recursos Académicos: nueva sección «Series Resueltas»
+========================================================================
 
-A. SOBRE ACHETIQ — fin del tronco de la línea de tiempo
+Cambio
+  Nueva pestaña de Recursos Académicos, con la misma organización que
+  Simulaciones: una tarjeta por materia y una página por materia.
+    - Hub pages/recursos/series-resueltas: tarjeta de Ingeniería de las
+      Reacciones Químicas (4º año), CTA «Acceder a las series resueltas».
+    - Página de la materia: un desplegable por serie con la lista de
+      ejercicios; cada ejercicio abre su resolución en la guía.
+        Serie 4 — Reactores no isotérmicos   10 ejercicios
+        Serie 5 — Reactores reales            3 ejercicios
+      En la cabecera, «Abrir la guía» y «Descargar la guía» (HTML para
+      leer sin conexión, 18 MB). Todos los enlaces a la guía usan la misma
+      pestaña: el primero la abre y los siguientes solo cambian de
+      ejercicio, sin volver a descargar el documento.
+    - Botón «Descargar» al comienzo de cada ejercicio de la lista: entrega
+      el HTML parcial de ese ejercicio (3,1 a 3,9 MB), autocontenido, con
+      su resolución completa, la nomenclatura y el formulario del curso.
+      En el teléfono se muestra solo el ícono de descarga.
+    - El menú «Recursos Académicos», el pie, la página 404, la portada y
+      el índice de Recursos («Cuatro herramientas para tu cursada»)
+      enlazan la sección, ubicada antes de Simulaciones (Simulaciones
+      queda como última opción).
 
-Defectos
-  1. El tronco azul de «Nuestra historia» seguía por debajo del punto final
-     de «Próximamente» (26 px en escritorio, 79 px en móvil). Pasaba cuando
-     la línea de tiempo se dibujaba con su panel oculto (por ejemplo, al
-     entrar por «Galería» y pasar a «Asociación»): el recorte del tronco se
-     medía una sola vez, con el panel sin dimensiones, y no se repetía.
-  2. En pantallas de 880 px o menos, ramas y empalmes quedaban 4 px a la
-     derecha del tronco (padding lateral del <ol>).
+  La guía es la compilación del motor de guías de IRQui acotada a las
+  series terminadas (4 y 5): mismos ejercicios y resoluciones que la guía
+  oficial de la materia, con todos los cálculos reejecutados. La Serie 6,
+  todavía en elaboración, no se incluye.
 
-Solución
-  1. assets/js/loaders.js: el recorte se vuelve a medir con ResizeObserver
-     cada vez que cambia la caja de la línea de tiempo (al mostrarse el
-     panel, al cargar las fuentes, al cambiar el ancho) y el relleno azul se
-     re-sincroniza.
-  2. assets/css/sobre-asociacion.css: se quita el padding lateral del <ol>
-     en móvil.
+  Diseño de lectura de la guía (plantilla rediseñada):
+    - un ejercicio por vez, con anterior y siguiente; el índice lateral
+      lista «Ejercicio 1», «Ejercicio 2», … por serie;
+    - botón discreto «Descargar» al comienzo de cada ejercicio, que
+      guarda ese ejercicio como HTML para leer sin conexión;
+    - cada ejercicio en tres etapas: Planteo, Resolución y Análisis, con
+      el enunciado en un recuadro propio;
+    - «Intentarlo primero» activo: se ve el planteo y la resolución se
+      pide con «Mostrar la resolución» (se puede desactivar);
+    - columna de lectura más angosta y fuente de lectura incluida en el
+      archivo (se ve igual en Windows, Mac, Android y iPhone).
 
+Archivos NUEVOS (copiar con la misma ruta)
+  pages/recursos/series-resueltas.html
+  pages/recursos/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
+  assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
+                                     (la guía; documento autocontenido)
+  assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas/
+      S04-E01.html … S04-E10.html, S05-E01.html … S05-E03.html
+                                     (HTML parcial de cada ejercicio, 13)
+  assets/css/series-resueltas.css    (hoja de página de la sección)
+  assets/js/series-resueltas.js      (tarjetas del hub)
+  data/series-resueltas.json         (catálogo de materias y series)
 
-B. SIMULADORES OU II — sombreado de las etapas fuera de las rectas
+Archivos a REEMPLAZAR (misma ruta)
+  data/navbar.json                   (submenú: «Series Resueltas»)
+  partials/footer.html               (pie: enlace a la sección)
+  pages/recursos.html                (índice de Recursos: cuarta fila)
+  index.html                         (portada: enlace a la sección)
+  404.html                           (accesos directos)
+  sitemap.xml                        (dos URL nuevas)
 
-Defecto
-  Cada banda sombreada de etapa es un polígono que cerraba con un segmento
-  recto entre el pie de la vertical y el inicio de la horizontal. Eso solo
-  coincide con la recta de operación si ambos puntos están sobre la misma
-  recta. En destilación fallaba:
-    - en la etapa de alimentación, que empieza sobre la recta de
-      rectificación y termina sobre la de agotamiento: el cierre cortaba por
-      fuera de la intersección (punto f) y sombreaba una cuña bajo las rectas;
-    - en el reboiler, cuya vertical llega a la diagonal por debajo de x_B.
+  main.bundle.css NO cambia: los estilos nuevos van en su propia hoja.
 
-Solución
-  - assets/js/sim/grafico.js: cada etapa admite `cierre`, la lista de
-    vértices por los que la banda vuelve siguiendo las rectas reales.
-  - assets/js/sim/destilacion.js: agrega la intersección (x_i, y_i) en la
-    etapa que la cruza y (x_B, x_B) en el reboiler.
-  - assets/js/sim/absorcion.js: el cierre de la última etapa parcial, que ya
-    era correcto, pasa al mismo mecanismo (antes `xc`).
-  Verificado en 11 combinaciones de parámetros (R, f de −0,2 a 1,3, E_MV,
-  α, x_B, x_F): ninguna banda queda fuera de las rectas.
+Importante
+  - La guía y los HTML parciales deben quedar en
+    assets/docs/series-resueltas/, FUERA de pages/: los scripts de
+    compilación (npm run build) agregan la política de seguridad del sitio
+    a todo pages/**, y esa política bloquearía sus estilos y scripts.
+  - No editar la guía ni los parciales a mano: se regeneran desde el
+    repositorio IRQui (procedimiento en docs/SERIES_RESUELTAS.md del
+    repositorio de laboratorio).
 
+Si ya se cargó una versión anterior de este parche, alcanza con
+reemplazar (o copiar, si no existen):
+  - assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
+  - la carpeta
+    assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas/
+  - pages/recursos/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
+  - assets/css/series-resueltas.css
+  - data/navbar.json, partials/footer.html, 404.html, index.html y
+    pages/recursos.html (orden: Series Resueltas antes de Simulaciones)
 
-Archivos a reemplazar en el repositorio oficial (misma ruta)
-  assets/js/loaders.js
-  assets/css/sobre-asociacion.css
-  assets/js/sim/grafico.js
-  assets/js/sim/destilacion.js
-  assets/js/sim/absorcion.js
-  (main.bundle.css no cambia.)
+URL del sitio oficial
+  Los HTML y el sitemap de este ZIP se generaron con
+  BASE_URL = https://achetiq.github.io (canonical, og:url, og:image,
+  JSON-LD y sitemap).
+
+Verificación
+  - Política de seguridad (verify-csp): 0 violaciones en 16 páginas.
+  - Presupuesto de bytes: todas las páginas dentro del umbral.
+  - Navegador, 1280 px y 375 px: sin errores ni desplazamiento horizontal;
+    enlaces a ejercicios, pestaña reutilizada y descargas comprobados.
+  - HTML parciales: compilados uno por uno con el motor de IRQui
+    (cálculo reejecutado y validación estática); el contenido de cada
+    ejercicio coincide con el de la guía completa y con la guía oficial.
