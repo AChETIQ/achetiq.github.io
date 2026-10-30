@@ -33,6 +33,7 @@
       "submenu": [
         { "label": "Apuntes Académicos", "href": "/pages/recursos/apuntes" },
         { "label": "Seguimiento de Carrera", "href": "/pages/recursos/seguimiento" },
+        { "label": "Series Resueltas", "href": "/pages/recursos/series-resueltas" },
         { "label": "Simulaciones", "href": "/pages/recursos/simulaciones" }
       ]
     },
