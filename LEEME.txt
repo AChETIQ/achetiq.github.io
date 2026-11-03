@@ -1,85 +1,75 @@
-PARCHE 2026-10-29 — Recursos Académicos: nueva sección «Series Resueltas»
+PARCHE 2026-11-03 — Series Resueltas: Serie 6 de IRQ y guía recompilada
 ========================================================================
 
+Requisito
+  Este parche se aplica sobre el del 2026-10-29 («Series Resueltas»,
+  última versión: botón «Descargar» centrado en cada fila). No modifica
+  estilos, scripts, menú, pie, portada ni 404.
+
 Cambio
-  Nueva pestaña de Recursos Académicos, con la misma organización que
-  Simulaciones: una tarjeta por materia y una página por materia.
-    - Hub pages/recursos/series-resueltas: tarjeta de Ingeniería de las
-      Reacciones Químicas (4º año), CTA «Acceder a las series resueltas».
-    - Página de la materia: un desplegable por serie con la lista de
-      ejercicios; cada ejercicio abre su resolución en la guía.
-        Serie 4 — Reactores no isotérmicos   10 ejercicios
-        Serie 5 — Reactores reales            3 ejercicios
-      En la cabecera, «Abrir la guía» y «Descargar la guía» (HTML para
-      leer sin conexión, 18 MB). Todos los enlaces a la guía usan la misma
-      pestaña: el primero la abre y los siguientes solo cambian de
-      ejercicio, sin volver a descargar el documento.
-    - Botón «Descargar» al comienzo de cada ejercicio de la lista: entrega
-      el HTML parcial de ese ejercicio (3,1 a 3,9 MB), autocontenido, con
-      su resolución completa, la nomenclatura y el formulario del curso.
-      En el teléfono se muestra solo el ícono de descarga.
-    - El menú «Recursos Académicos», el pie, la página 404, la portada y
-      el índice de Recursos («Cuatro herramientas para tu cursada»)
-      enlazan la sección, ubicada antes de Simulaciones (Simulaciones
-      queda como última opción).
+  A. Serie 6 de Ingeniería de las Reacciones Químicas
+     La página de la materia suma el desplegable
+       Serie 6 — Cinética de las reacciones catalíticas heterogéneas.
+                 Reactores catalíticos                 14 ejercicios
+     con su bajada y la lista de ejercicios. Cada fila abre el ejercicio
+     en la guía y ofrece «Descargar» su HTML parcial, igual que en las
+     series 4 y 5. La guía pasa a tener 27 ejercicios (Series 4, 5 y 6).
+     Se actualizan la cabecera de la página («Series 4, 5 y 6 · 27
+     ejercicios»; «Descargar la guía», 36 MB), la descripción para
+     buscadores y redes, el hub de Series Resueltas, el índice de
+     Recursos («Primera entrega: series 4, 5 y 6 …»), el catálogo
+     data/series-resueltas.json y el sitemap.
 
-  La guía es la compilación del motor de guías de IRQui acotada a las
-  series terminadas (4 y 5): mismos ejercicios y resoluciones que la guía
-  oficial de la materia, con todos los cálculos reejecutados. La Serie 6,
-  todavía en elaboración, no se incluye.
-
-  Diseño de lectura de la guía (plantilla rediseñada):
-    - un ejercicio por vez, con anterior y siguiente; el índice lateral
-      lista «Ejercicio 1», «Ejercicio 2», … por serie;
-    - botón discreto «Descargar» al comienzo de cada ejercicio, que
-      guarda ese ejercicio como HTML para leer sin conexión;
-    - cada ejercicio en tres etapas: Planteo, Resolución y Análisis, con
-      el enunciado en un recuadro propio;
-    - «Intentarlo primero» activo: se ve el planteo y la resolución se
-      pide con «Mostrar la resolución» (se puede desactivar);
-    - columna de lectura más angosta y fuente de lectura incluida en el
-      archivo (se ve igual en Windows, Mac, Android y iPhone).
+  B. Guía y HTML parciales recompilados (también los de las series 4 y 5)
+     La verificación visual de la guía en el repositorio IRQui (QA visual
+     del 2026-11-03) modificó todos los ejercicios, por lo que se
+     reemplazan la guía y los 13 parciales ya publicados:
+       - en el teléfono, la barra de etapas pasa a dos filas (Planteo ·
+         Resolución · Análisis y, debajo, «Intentarlo primero» y
+         «Desplegar todo»): ya no queda recortado «Intentarlo primero»;
+       - la notación científica no se corta entre la mantisa y la potencia
+         de diez (p. ej. 1,23 × 10⁴);
+       - ecuaciones anchas partidas en renglones alineados para pantallas
+         de 360 a 390 px; el ejercicio 1 de la Serie 5 se reelaboró.
+     El contenido de cada ejercicio coincide con el de la guía oficial de
+     IRQui; los cálculos se reejecutaron al compilar.
 
 Archivos NUEVOS (copiar con la misma ruta)
-  pages/recursos/series-resueltas.html
-  pages/recursos/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
-  assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
-                                     (la guía; documento autocontenido)
   assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas/
-      S04-E01.html … S04-E10.html, S05-E01.html … S05-E03.html
-                                     (HTML parcial de cada ejercicio, 13)
-  assets/css/series-resueltas.css    (hoja de página de la sección)
-  assets/js/series-resueltas.js      (tarjetas del hub)
-  data/series-resueltas.json         (catálogo de materias y series)
+      S06-E01.html … S06-E14.html   (HTML parcial de cada ejercicio de la
+                                     Serie 6, 14 archivos)
 
 Archivos a REEMPLAZAR (misma ruta)
-  data/navbar.json                   (submenú: «Series Resueltas»)
-  partials/footer.html               (pie: enlace a la sección)
-  pages/recursos.html                (índice de Recursos: cuarta fila)
-  index.html                         (portada: enlace a la sección)
-  404.html                           (accesos directos)
-  sitemap.xml                        (dos URL nuevas)
+  assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
+                                     (la guía; documento autocontenido,
+                                     36,2 MB)
+  assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas/
+      S04-E01.html … S04-E10.html, S05-E01.html … S05-E03.html
+                                     (13 parciales recompilados)
+  pages/recursos/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
+                                     (desplegable de la Serie 6 y tamaños
+                                     de descarga actualizados)
+  pages/recursos/series-resueltas.html   (hub: texto sin JavaScript)
+  pages/recursos.html                (índice de Recursos: «series 4, 5 y 6»)
+  data/series-resueltas.json         (catálogo: Serie 6, 14 ejercicios)
+  sitemap.xml                        (fechas de las tres páginas)
 
-  main.bundle.css NO cambia: los estilos nuevos van en su propia hoja.
+  main.bundle.css NO cambia.
+
+Lo más simple
+  Copiar todo el contenido del ZIP (salvo este LEEME.txt) sobre la raíz
+  del repositorio oficial, aceptando reemplazar los archivos existentes.
 
 Importante
-  - La guía y los HTML parciales deben quedar en
-    assets/docs/series-resueltas/, FUERA de pages/: los scripts de
-    compilación (npm run build) agregan la política de seguridad del sitio
-    a todo pages/**, y esa política bloquearía sus estilos y scripts.
+  - La guía y los parciales deben quedar en assets/docs/series-resueltas/,
+    FUERA de pages/ (la política de seguridad que agrega npm run build a
+    pages/** bloquearía sus estilos y scripts).
   - No editar la guía ni los parciales a mano: se regeneran desde el
     repositorio IRQui (procedimiento en docs/SERIES_RESUELTAS.md del
     repositorio de laboratorio).
-
-Si ya se cargó una versión anterior de este parche, alcanza con
-reemplazar (o copiar, si no existen):
-  - assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
-  - la carpeta
-    assets/docs/series-resueltas/ingenieria-de-las-reacciones-quimicas/
-  - pages/recursos/series-resueltas/ingenieria-de-las-reacciones-quimicas.html
-  - assets/css/series-resueltas.css
-  - data/navbar.json, partials/footer.html, 404.html, index.html y
-    pages/recursos.html (orden: Series Resueltas antes de Simulaciones)
+  - Los ejercicios 1 a 8 de la Serie 6 se identifican en la guía con el
+    sufijo del año de la serie (#S06-E01-2024 … #S06-E08-2024); sus
+    parciales se publican con el nombre corto (S06-E01.html …).
 
 URL del sitio oficial
   Los HTML y el sitemap de este ZIP se generaron con
@@ -88,9 +78,15 @@ URL del sitio oficial
 
 Verificación
   - Política de seguridad (verify-csp): 0 violaciones en 16 páginas.
-  - Presupuesto de bytes: todas las páginas dentro del umbral.
-  - Navegador, 1280 px y 375 px: sin errores ni desplazamiento horizontal;
-    enlaces a ejercicios, pestaña reutilizada y descargas comprobados.
-  - HTML parciales: compilados uno por uno con el motor de IRQui
-    (cálculo reejecutado y validación estática); el contenido de cada
-    ejercicio coincide con el de la guía completa y con la guía oficial.
+  - Navegador, 1280 px y 375 px: Recursos, hub y página de la materia sin
+    errores de consola, sin recursos fallidos y sin desplazamiento
+    horizontal; 59 enlaces de la página de la materia con destino
+    existente (archivo y ancla); la pestaña de la guía se reutiliza y
+    «Descargar» entrega IRQ_Serie_6_Ej_NN.html.
+  - Guía, 27 ejercicios con todos los desplegables abiertos, a 375 px y a
+    1280 px: sin errores de consola, sin enlaces internos rotos, sin
+    recursos externos, sin desbordes de página y con la barra de etapas
+    completa en el teléfono.
+  - HTML parciales: compilados uno por uno con el motor de IRQui (cálculo
+    reejecutado y validación estática); el artículo de cada uno coincide
+    con el de la guía, salvo la navegación anterior/siguiente.
